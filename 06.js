@@ -1,8 +1,20 @@
+// abstrak
 class Kendaraan {
   constructor(merk) {
     this.merk = merk;
-    if (this.constructor === Kendaraan) {
-      throw new Error("Kelas abstrak 'Kendaraan' tidak bisa diinstansiasi langsung.");
+  }
+  // Method abstrak (harus diimplementasikan oleh subclass)
+  maju() {
+    throw new Error("Method 'maju()' harus diimplementasikan!");
+  }
+}
+
+// Versi kedua (kelas abstrak sebenarnya)
+class KendaraanAbstrak {
+  constructor(merk) {
+    this.merk = merk;
+    if (this.constructor === KendaraanAbstrak) {
+      throw new Error("Kelas abstrak 'KendaraanAbstrak' tidak bisa diinstansiasi langsung.");
     }
   }
   maju() {
@@ -10,7 +22,8 @@ class Kendaraan {
   }
 }
 
-class Mobil extends Kendaraan {
+// Subclass yang mengimplementasikan kelas abstrak
+class Mobil extends KendaraanAbstrak {
   maju() {
     return `${this.merk} melaju dengan kecepatan tinggi!`;
   }
@@ -18,16 +31,17 @@ class Mobil extends Kendaraan {
 
 const avanza = new Mobil("Toyota Avanza");
 console.log(avanza.maju()); // Toyota Avanza melaju dengan kecepatan tinggi!
+// const kendaraanBaru = new KendaraanAbstrak("Generic"); // Error: Kelas abstrak tidak bisa diinstansiasi
 
-// const kendaraanBaru = new Kendaraan("Generic"); // Error: Kelas abstrak tidak bisa diinstansiasi
 
-// Interface sebagai objek blueprint
+// Interface sebagai objek blueprint //
 const kendaraanInterface = {
   maju: function () {
     throw new Error("Method 'maju()' harus diimplementasikan!");
   }
 };
 
+// Class yang mematuhi interface
 class Sepeda {
   constructor(merk) {
     this.merk = merk;
@@ -41,14 +55,12 @@ class Sepeda {
 const polygon = new Sepeda("Polygon");
 console.log(polygon.maju()); // Polygon melaju dengan tenaga manusia!
 
-// Pemeriksaan ini sebenarnya tidak diperlukan karena Sepeda sudah mengimplementasikan maju(),
-// tapi jika ingin memastikan, bisa diperbaiki menjadi pemeriksaan yang lebih tepat.
-// Namun, kode asli tidak akan throw error karena maju() ada.
-// Jika ingin throw jika tidak ada, ubah kondisi:
-// if (!polygon.maju || typeof polygon.maju !== "function") {
-//   throw new Error("Class Sepeda harus mengimplementasikan 'maju()'!");
-// }
+if (typeof polygon.maju !== "function") {
+  throw new Error("Class Sepeda harus mengimplementasikan 'maju()'!");
+}
 
+
+// Abstrak: Pembayaran
 class Pembayaran {
   constructor(jumlah) {
     this.jumlah = jumlah;
@@ -73,7 +85,7 @@ class PayPal extends Pembayaran {
   }
 }
 
-// Implementasi
+// Implementasi subclass konkret
 const bayar1 = new KartuKredit(500000);
 console.log(bayar1.prosesPembayaran()); // Pembayaran 500000 melalui Kartu Kredit berhasil!
 
