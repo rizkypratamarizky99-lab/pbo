@@ -2,7 +2,7 @@
 <html lang="id">
 <head>
 <meta charset="UTF-8">
-<title>Login OOP</title>
+<title>Login App</title>
 
 <style>
 * {
@@ -12,27 +12,28 @@
 body {
     margin: 0;
     height: 100vh;
-    font-family: "Segoe UI", Arial, sans-serif;
-    background: linear-gradient(135deg, #667eea, #764ba2);
+    font-family: "Segoe UI", sans-serif;
+    background: linear-gradient(135deg, #43cea2, #185a9d);
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
 /* CARD */
-.login-card {
-    width: 340px;
+.card {
+    width: 360px;
     background: #ffffff;
-    padding: 30px;
-    border-radius: 14px;
-    box-shadow: 0 25px 45px rgba(0,0,0,0.25);
+    padding: 32px;
+    border-radius: 18px;
+    box-shadow: 0 30px 60px rgba(0,0,0,0.25);
 }
 
 /* TITLE */
-.login-card h2 {
+.card h2 {
     text-align: center;
-    margin-bottom: 25px;
-    color: #333;
+    margin-bottom: 26px;
+    color: #185a9d;
+    letter-spacing: 0.5px;
 }
 
 /* FORM */
@@ -45,35 +46,51 @@ body {
 .form-group label {
     font-size: 13px;
     margin-bottom: 6px;
-    color: #666;
+    color: #555;
 }
 
 .form-group input {
-    padding: 11px;
-    border-radius: 8px;
+    padding: 12px 14px;
+    border-radius: 10px;
     border: 1px solid #ccc;
     font-size: 14px;
+    transition: 0.2s;
 }
 
 .form-group input:focus {
     outline: none;
-    border-color: #667eea;
+    border-color: #43cea2;
+    box-shadow: 0 0 0 2px rgba(67,206,162,0.2);
 }
 
-/* BUTTON */
+/* BUTTON LOGIN */
 button {
     width: 100%;
-    padding: 12px;
-    border-radius: 9px;
+    padding: 13px;
+    border-radius: 12px;
     border: none;
-    background: #667eea;
+    background: linear-gradient(135deg, #43cea2, #2ebf91);
     color: white;
     font-size: 15px;
     cursor: pointer;
+    margin-top: 6px;
 }
 
 button:hover {
-    background: #5563d6;
+    opacity: 0.9;
+}
+
+/* ADS */
+.ads {
+    display: none;
+    margin-top: 18px;
+    padding: 12px;
+    border-radius: 10px;
+    background: #fff1f1;
+    border: 1px solid #ff6b6b;
+    color: #b00020;
+    text-align: center;
+    font-size: 13px;
 }
 
 /* USER PAGE */
@@ -83,15 +100,21 @@ button:hover {
 }
 
 .user-page p {
-    margin: 20px 0;
+    margin: 22px 0;
+    font-size: 15px;
     color: #444;
+}
+
+/* LOGOUT */
+.logout-btn {
+    background: linear-gradient(135deg, #ff5252, #d32f2f);
 }
 </style>
 </head>
 
 <body>
 
-<div class="login-card">
+<div class="card">
 
     <!-- LOGIN -->
     <div id="loginPage">
@@ -108,13 +131,17 @@ button:hover {
         </div>
 
         <button onclick="app.login()">Login</button>
+
+        <div class="ads" id="ads">
+            📢 salah login
+        </div>
     </div>
 
     <!-- USER -->
     <div class="user-page" id="userPage">
-        <h2>Login Berhasil</h2>
-        <p id="userInfo"></p>
-        <button onclick="app.logout()">Logout</button>
+        <h2>Halaman User</h2>
+        <p id="infoUser"></p>
+        <button class="logout-btn" onclick="app.logout()">Logout</button>
     </div>
 
 </div>
@@ -122,21 +149,21 @@ button:hover {
 <script>
 class LoginApp {
     constructor() {
-        this.storageKey = "USER_DATA";
+        this.key = "USER_LOGIN_DATA";
         this.initData();
     }
 
     initData() {
-        if (!localStorage.getItem(this.storageKey)) {
+        if (!localStorage.getItem(this.key)) {
             const users = [
                 { username: "rizki", password: "rizki123" }
             ];
-            localStorage.setItem(this.storageKey, JSON.stringify(users));
+            localStorage.setItem(this.key, JSON.stringify(users));
         }
     }
 
     getUsers() {
-        return JSON.parse(localStorage.getItem(this.storageKey));
+        return JSON.parse(localStorage.getItem(this.key));
     }
 
     login() {
@@ -148,16 +175,17 @@ class LoginApp {
         );
 
         if (user) {
+            ads.style.display = "none";
             this.showUser(user);
         } else {
-            alert("❌ Salah login");
+            ads.style.display = "block";
         }
     }
 
     showUser(user) {
         loginPage.style.display = "none";
         userPage.style.display = "block";
-        userInfo.innerText = "Selamat datang, " + user.username;
+        infoUser.innerText = "Selamat datang, " + user.username;
     }
 
     logout() {
