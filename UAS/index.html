@@ -1,47 +1,183 @@
-
 <!DOCTYPE html>
-<html>
+<html lang="id">
 <head>
-<title>Login Class OOP</title>
+<meta charset="UTF-8">
+<title>Login OOP</title>
+
+<style>
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: "Segoe UI", Arial, sans-serif;
+    background: linear-gradient(135deg, #4facfe, #00f2fe);
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.card {
+    background: #ffffff;
+    width: 340px;
+    padding: 28px;
+    border-radius: 12px;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+}
+
+.card h2 {
+    text-align: center;
+    margin-bottom: 24px;
+    color: #333;
+}
+
+.form-group {
+    margin-bottom: 16px;
+}
+
+label {
+    display: block;
+    font-size: 13px;
+    color: #555;
+    margin-bottom: 6px;
+}
+
+input {
+    width: 100%;
+    padding: 10px 12px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    font-size: 14px;
+}
+
+input:focus {
+    outline: none;
+    border-color: #4facfe;
+}
+
+button {
+    width: 100%;
+    padding: 11px;
+    border-radius: 8px;
+    border: none;
+    background: #4facfe;
+    color: #fff;
+    font-size: 15px;
+    cursor: pointer;
+}
+
+button:hover {
+    background: #3793e0;
+}
+
+.ads {
+    display: none;
+    margin-top: 16px;
+    padding: 10px;
+    border-radius: 8px;
+    background: #ffeaea;
+    border: 1px solid #ff6b6b;
+    color: #b30000;
+    font-size: 13px;
+    text-align: center;
+}
+
+.user-page {
+    display: none;
+    text-align: center;
+}
+
+.user-page p {
+    margin: 20px 0;
+    font-size: 15px;
+}
+</style>
 </head>
+
 <body>
 
-<h3>Login</h3>
-<input id="username" placeholder="Username">
-<input id="password" type="password" placeholder="Password">
-<button onclick="app.login()">Login</button>
+<div class="card">
 
-<p id="msg"></p>
+    <!-- LOGIN -->
+    <div id="loginPage">
+        <h2>Login</h2>
+
+        <div class="form-group">
+            <label>Username</label>
+            <input id="username" placeholder="Masukkan username">
+        </div>
+
+        <div class="form-group">
+            <label>Password</label>
+            <input id="password" type="password" placeholder="Masukkan password">
+        </div>
+
+        <button onclick="app.login()">Masuk</button>
+
+        <div class="ads" id="ads">
+            ❌ Salah login <br>
+            📢 Iklan: Silakan coba lagi
+        </div>
+    </div>
+
+    <!-- USER PAGE -->
+    <div class="user-page" id="userPage">
+        <h2>Berhasil Login</h2>
+        <p id="userInfo"></p>
+        <button onclick="app.logout()">Logout</button>
+    </div>
+
+</div>
 
 <script>
 class LoginApp {
     constructor() {
-        this.key = "users";
-        this.init();
+        this.key = "USER_DATA";
+        this.initData();
     }
 
-    init() {
-        const data = [
-            { username: "admin", password: "123" },
-            { username: "user", password: "456" }
-        ];
-        localStorage.setItem(this.key, JSON.stringify(data));
+    initData() {
+        if (!localStorage.getItem(this.key)) {
+            const users = [
+                { username: "rizki", password: "123" }
+            ];
+            localStorage.setItem(this.key, JSON.stringify(users));
+        }
+    }
+
+    getUsers() {
+        return JSON.parse(localStorage.getItem(this.key));
     }
 
     login() {
-        const u = username.value;
-        const p = password.value;
-        const users = JSON.parse(localStorage.getItem(this.key));
+        const u = username.value.trim();
+        const p = password.value.trim();
 
-        const valid = users.find(
+        const validUser = this.getUsers().find(
             user => user.username === u && user.password === p
         );
 
-        if (valid) {
-            msg.innerText = "Login berhasil: " + valid.username;
+        if (validUser) {
+            ads.style.display = "none";
+            this.showUser(validUser);
         } else {
-            msg.innerText = "Salah login (Ads tampil)";
+            ads.style.display = "block";
         }
+    }
+
+    showUser(user) {
+        loginPage.style.display = "none";
+        userPage.style.display = "block";
+        userInfo.innerText = "Selamat datang, " + user.username;
+    }
+
+    logout() {
+        username.value = "";
+        password.value = "";
+        loginPage.style.display = "block";
+        userPage.style.display = "none";
     }
 }
 
@@ -50,4 +186,3 @@ const app = new LoginApp();
 
 </body>
 </html>
-
