@@ -5,9 +5,7 @@
 <title>Login App</title>
 
 <style>
-* {
-    box-sizing: border-box;
-}
+* { box-sizing: border-box; }
 
 body {
     margin: 0;
@@ -22,7 +20,7 @@ body {
 /* CARD */
 .card {
     width: 360px;
-    background: #ffffff;
+    background: #fff;
     padding: 32px;
     border-radius: 18px;
     box-shadow: 0 30px 60px rgba(0,0,0,0.25);
@@ -42,20 +40,20 @@ body {
     margin-bottom: 18px;
 }
 
-.form-group label {
+label {
     font-size: 13px;
     margin-bottom: 6px;
     color: #555;
 }
 
-.form-group input {
+input {
     padding: 12px;
     border-radius: 10px;
     border: 1px solid #ccc;
     font-size: 14px;
 }
 
-.form-group input:focus {
+input:focus {
     outline: none;
     border-color: #43cea2;
 }
@@ -87,6 +85,46 @@ button {
 .logout-btn {
     background: linear-gradient(135deg, #ff5252, #d32f2f);
 }
+
+/* ===== CUSTOM ALERT ===== */
+.alert-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.4);
+    justify-content: center;
+    align-items: center;
+}
+
+.alert-box {
+    width: 300px;
+    background: white;
+    padding: 22px;
+    border-radius: 16px;
+    text-align: center;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+    animation: scaleIn 0.25s ease;
+}
+
+.alert-box h3 {
+    margin: 0 0 10px;
+    color: #d32f2f;
+}
+
+.alert-box p {
+    font-size: 14px;
+    color: #444;
+    margin-bottom: 18px;
+}
+
+.alert-box button {
+    background: #d32f2f;
+}
+
+@keyframes scaleIn {
+    from { transform: scale(0.8); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+}
 </style>
 </head>
 
@@ -100,12 +138,12 @@ button {
 
         <div class="form-group">
             <label>Username</label>
-            <input id="username" placeholder="Masukkan username">
+            <input id="username">
         </div>
 
         <div class="form-group">
             <label>Password</label>
-            <input id="password" type="password" placeholder="Masukkan password">
+            <input id="password" type="password">
         </div>
 
         <button onclick="app.login()">Login</button>
@@ -118,6 +156,15 @@ button {
         <button class="logout-btn" onclick="app.logout()">Logout</button>
     </div>
 
+</div>
+
+<!-- ALERT CUSTOM -->
+<div class="alert-overlay" id="alertBox">
+    <div class="alert-box">
+        <h3>Login Gagal</h3>
+        <p>Username atau password salah</p>
+        <button onclick="app.closeAlert()">OK</button>
+    </div>
 </div>
 
 <script>
@@ -151,7 +198,7 @@ class LoginApp {
         if (user) {
             this.showUser(user);
         } else {
-            alert("Salah login");
+            this.showAlert();
         }
     }
 
@@ -166,6 +213,14 @@ class LoginApp {
         password.value = "";
         loginPage.style.display = "block";
         userPage.style.display = "none";
+    }
+
+    showAlert() {
+        document.getElementById("alertBox").style.display = "flex";
+    }
+
+    closeAlert() {
+        document.getElementById("alertBox").style.display = "none";
     }
 }
 
