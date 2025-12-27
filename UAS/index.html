@@ -2,10 +2,12 @@
 <html lang="id">
 <head>
 <meta charset="UTF-8">
-<title>Login App</title>
+<title>Aplikasi Login</title>
 
 <style>
-* { box-sizing: border-box; }
+* {
+    box-sizing: border-box;
+}
 
 body {
     margin: 0;
@@ -20,7 +22,7 @@ body {
 /* CARD */
 .card {
     width: 360px;
-    background: #fff;
+    background: #ffffff;
     padding: 32px;
     border-radius: 18px;
     box-shadow: 0 30px 60px rgba(0,0,0,0.25);
@@ -40,20 +42,20 @@ body {
     margin-bottom: 18px;
 }
 
-label {
+.form-group label {
     font-size: 13px;
     margin-bottom: 6px;
     color: #555;
 }
 
-input {
+.form-group input {
     padding: 12px;
     border-radius: 10px;
     border: 1px solid #ccc;
     font-size: 14px;
 }
 
-input:focus {
+.form-group input:focus {
     outline: none;
     border-color: #43cea2;
 }
@@ -85,46 +87,6 @@ button {
 .logout-btn {
     background: linear-gradient(135deg, #ff5252, #d32f2f);
 }
-
-/* ===== CUSTOM ALERT ===== */
-.alert-overlay {
-    display: none;
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,0.4);
-    justify-content: center;
-    align-items: center;
-}
-
-.alert-box {
-    width: 300px;
-    background: white;
-    padding: 22px;
-    border-radius: 16px;
-    text-align: center;
-    box-shadow: 0 20px 40px rgba(0,0,0,0.3);
-    animation: scaleIn 0.25s ease;
-}
-
-.alert-box h3 {
-    margin: 0 0 10px;
-    color: #d32f2f;
-}
-
-.alert-box p {
-    font-size: 14px;
-    color: #444;
-    margin-bottom: 18px;
-}
-
-.alert-box button {
-    background: #d32f2f;
-}
-
-@keyframes scaleIn {
-    from { transform: scale(0.8); opacity: 0; }
-    to { transform: scale(1); opacity: 1; }
-}
 </style>
 </head>
 
@@ -132,24 +94,24 @@ button {
 
 <div class="card">
 
-    <!-- LOGIN -->
+    <!-- LOGIN PAGE -->
     <div id="loginPage">
         <h2>Login</h2>
 
         <div class="form-group">
             <label>Username</label>
-            <input id="username">
+            <input id="username" placeholder="Masukkan username">
         </div>
 
         <div class="form-group">
             <label>Password</label>
-            <input id="password" type="password">
+            <input id="password" type="password" placeholder="Masukkan password">
         </div>
 
         <button onclick="app.login()">Login</button>
     </div>
 
-    <!-- USER -->
+    <!-- USER PAGE -->
     <div class="user-page" id="userPage">
         <h2>Halaman User</h2>
         <p id="infoUser"></p>
@@ -158,35 +120,29 @@ button {
 
 </div>
 
-<!-- ALERT CUSTOM -->
-<div class="alert-overlay" id="alertBox">
-    <div class="alert-box">
-        <h3>Login Gagal</h3>
-        <p>Username atau password salah</p>
-        <button onclick="app.closeAlert()">OK</button>
-    </div>
-</div>
-
 <script>
 class LoginApp {
     constructor() {
-        this.key = "USER_LOGIN_DATA";
+        this.storageKey = "USER_LOGIN_DATA";
         this.initData();
     }
 
+    // Simpan dataset JSON ke localStorage
     initData() {
-        if (!localStorage.getItem(this.key)) {
+        if (!localStorage.getItem(this.storageKey)) {
             const users = [
                 { username: "rizki", password: "rizki123" }
             ];
-            localStorage.setItem(this.key, JSON.stringify(users));
+            localStorage.setItem(this.storageKey, JSON.stringify(users));
         }
     }
 
+    // Ambil data user
     getUsers() {
-        return JSON.parse(localStorage.getItem(this.key));
+        return JSON.parse(localStorage.getItem(this.storageKey));
     }
 
+    // LOGIN (SALAH = ALERT)
     login() {
         const u = username.value.trim();
         const p = password.value.trim();
@@ -198,32 +154,27 @@ class LoginApp {
         if (user) {
             this.showUser(user);
         } else {
-            this.showAlert();
+            alert("Salah login");
         }
     }
 
+    // TAMPIL HALAMAN USER
     showUser(user) {
         loginPage.style.display = "none";
         userPage.style.display = "block";
         infoUser.innerText = "Selamat datang, " + user.username;
     }
 
+    // LOGOUT
     logout() {
         username.value = "";
         password.value = "";
         loginPage.style.display = "block";
         userPage.style.display = "none";
     }
-
-    showAlert() {
-        document.getElementById("alertBox").style.display = "flex";
-    }
-
-    closeAlert() {
-        document.getElementById("alertBox").style.display = "none";
-    }
 }
 
+// INISIALISASI APP
 const app = new LoginApp();
 </script>
 
