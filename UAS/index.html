@@ -33,7 +33,6 @@ body {
     text-align: center;
     margin-bottom: 26px;
     color: #185a9d;
-    letter-spacing: 0.5px;
 }
 
 /* FORM */
@@ -50,20 +49,18 @@ body {
 }
 
 .form-group input {
-    padding: 12px 14px;
+    padding: 12px;
     border-radius: 10px;
     border: 1px solid #ccc;
     font-size: 14px;
-    transition: 0.2s;
 }
 
 .form-group input:focus {
     outline: none;
     border-color: #43cea2;
-    box-shadow: 0 0 0 2px rgba(67,206,162,0.2);
 }
 
-/* BUTTON LOGIN */
+/* BUTTON */
 button {
     width: 100%;
     padding: 13px;
@@ -73,24 +70,6 @@ button {
     color: white;
     font-size: 15px;
     cursor: pointer;
-    margin-top: 6px;
-}
-
-button:hover {
-    opacity: 0.9;
-}
-
-/* ADS */
-.ads {
-    display: none;
-    margin-top: 18px;
-    padding: 12px;
-    border-radius: 10px;
-    background: #fff1f1;
-    border: 1px solid #ff6b6b;
-    color: #b00020;
-    text-align: center;
-    font-size: 13px;
 }
 
 /* USER PAGE */
@@ -101,7 +80,6 @@ button:hover {
 
 .user-page p {
     margin: 22px 0;
-    font-size: 15px;
     color: #444;
 }
 
@@ -131,10 +109,6 @@ button:hover {
         </div>
 
         <button onclick="app.login()">Login</button>
-
-        <div class="ads" id="ads">
-            📢 salah login
-        </div>
     </div>
 
     <!-- USER -->
@@ -175,10 +149,9 @@ class LoginApp {
         );
 
         if (user) {
-            ads.style.display = "none";
             this.showUser(user);
         } else {
-            ads.style.display = "block";
+            alert("Salah login");
         }
     }
 
