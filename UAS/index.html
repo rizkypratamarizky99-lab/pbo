@@ -1,1 +1,53 @@
-M. Rizki Pratama
+
+<!DOCTYPE html>
+<html>
+<head>
+<title>Login Class OOP</title>
+</head>
+<body>
+
+<h3>Login</h3>
+<input id="username" placeholder="Username">
+<input id="password" type="password" placeholder="Password">
+<button onclick="app.login()">Login</button>
+
+<p id="msg"></p>
+
+<script>
+class LoginApp {
+    constructor() {
+        this.key = "users";
+        this.init();
+    }
+
+    init() {
+        const data = [
+            { username: "admin", password: "123" },
+            { username: "user", password: "456" }
+        ];
+        localStorage.setItem(this.key, JSON.stringify(data));
+    }
+
+    login() {
+        const u = username.value;
+        const p = password.value;
+        const users = JSON.parse(localStorage.getItem(this.key));
+
+        const valid = users.find(
+            user => user.username === u && user.password === p
+        );
+
+        if (valid) {
+            msg.innerText = "Login berhasil: " + valid.username;
+        } else {
+            msg.innerText = "Salah login (Ads tampil)";
+        }
+    }
+}
+
+const app = new LoginApp();
+</script>
+
+</body>
+</html>
+
